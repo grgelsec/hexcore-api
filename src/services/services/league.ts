@@ -1,8 +1,9 @@
 import "dotenv/config";
 import type { AccountDto, region } from "@types";
-class LeagueService {
+class RiotService {
   private apiKey: string;
   private region: string;
+  public account: AccountService;
 
   constructor(apiKey: string, region: string) {
     if (!apiKey) {
@@ -11,6 +12,8 @@ class LeagueService {
 
     this.apiKey = apiKey;
     this.region = region;
+
+    this.account = new AccountService(this.request.bind(this));
   }
 
   private get baseURL(): string {
@@ -19,7 +22,7 @@ class LeagueService {
 
   private async request<T>(endpoint: string): Promise<T> {
     const res = await fetch(`${this.baseURL}${endpoint}`, {
-      headers: { "X-Riot-Token": this.apiKey },
+      headers: { "XS-Riot-Token": this.apiKey },
     });
 
     if (!res.ok) {
@@ -27,8 +30,26 @@ class LeagueService {
     }
 
     const data = await res.json();
-
+    console.log(data);
     return data;
+  }
+}
+
+class AccountService {
+  private request: <T>(endpoint: string) => Promise<T>;
+
+  constructor(request: <T>(endpoint: string) => Promise<T>) {
+    this.request = request;
+  }
+
+  async getSummonerByPuuid(puuid: string) {
+    if (!puuid) {
+      throw new Error(`Missing player unique user id (puuid).`);
+    }
+
+    return this.request<AccountDto>(
+      `/riot/account/v1/accounts/by-puuid/${encodeURIComponent(puuid)}`,
+    );
   }
 
   async getSummonerByRiotId(riotId: string) {
@@ -49,8 +70,11 @@ class LeagueService {
   }
 }
 
-const RIOT_API_KEY = process.env.RIOT_API_KEY;
+// const RIOT_API_KEY = process.env.RIOT_API_KEY;
 
-const leage = new LeagueService(RIOT_API_KEY!, "americas");
+// const leage = new RiotService(RIOT_API_KEY!, "americas");
 
-leage.getSummonerByRiotId("Georgie#EZLL");
+// leage.getSummonerByRiotId("Georgie#EZLL");
+// leage.getSummonerByPuuid(
+//   "UPDmamHMSP2-38FGcerju-z3mBbI2Z6Ti0-64gwd9P6vJ7OyEuN0vpXrXMeDOJNGrGlJY-9hte98Mw",
+// );
