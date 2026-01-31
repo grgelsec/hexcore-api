@@ -1,5 +1,11 @@
 import "dotenv/config";
-import type { AccountDto, region, MatchDto } from "@types";
+import type {
+  AccountDto,
+  region,
+  MatchDto,
+  RiotMatchDto,
+  FetchOptions,
+} from "@types";
 class RiotService {
   private apiKey: string;
   private region: string;
@@ -22,18 +28,56 @@ class RiotService {
     return `https://${this.region}.api.riotgames.com`;
   }
 
-  private async request<T>(endpoint: string): Promise<T> {
-    const res = await fetch(`${this.baseURL}${endpoint}`, {
-      headers: { "X-Riot-Token": this.apiKey },
-    });
+  private async request<T>(
+    endpoint: string,
+    options: FetchOptions = {},
+  ): Promise<T> {
+    const { timeout = 5000, retries = 2, ...fetchOpions } = options;
 
-    if (!res.ok) {
-      throw new Error(`${res.status}: ${res.statusText}`);
+    let lastError: Error | null = null;
+
+    for (let attempt = 1; attempt <= retries; attempt++) {
+      const contoller = new AbortController();
+      const timeoutId = setTimeout(() => contoller.abort(), timeout);
+
+      try {
+        const res = await fetch(`${this.baseURL}${endpoint}`, {
+          ...fetchOpions,
+          headers: { "X-Riot-Token": this.apiKey, ...fetchOpions.headers },
+          signal: contoller.signal,
+        });
+
+        if (!res.ok) {
+          if (res.status <= 400 && res.status < 500) {
+            const body = res.text();
+            throw new Error(
+              `${res.status}, ${res.statusText} \n Body: ${body}`,
+            );
+          }
+          throw new Error(`HTTP: ${res.status}`);
+        }
+
+        //Clear timrout timer, call succeeded
+        clearTimeout(timeoutId);
+
+        return (await res.json()) as T;
+      } catch (error) {
+        //Ensure the error caught is an error, if not then
+        const lastError =
+          error instanceof Error ? error : new Error(String(error));
+
+        const isTimeout = lastError.name === "AbortError";
+        const isServerError = !lastError.message.startsWith("HTTP 4");
+
+        if ((isServerError || isTimeout) && attempt < retries) {
+          //retry the call with exponential backoff
+          await new Promise((r) => setTimeout(r, 1000 * Math.pow(2, attempt)));
+          continue;
+        }
+        break;
+      }
     }
-
-    const data = await res.json();
-    console.log(data);
-    return data;
+    throw lastError;
   }
 }
 
@@ -88,7 +132,7 @@ class MatchService {
   async getMatchByMatchId(matchId: string) {
     if (!matchId) throw new Error("Missing match id (matchId");
 
-    return this.request<MatchDto>(
+    return this.request<RiotMatchDto>(
       `/lol/match/v5/matches/${encodeURI(matchId)}`,
     );
   }

@@ -1,5 +1,10 @@
 export type region = "americas" | "europe" | "asia";
 
+export interface FetchOptions extends RequestInit {
+  timeout?: number;
+  retries?: number;
+}
+
 export interface AccountDto {
   puuid: string;
   gameName: string;
@@ -392,4 +397,110 @@ export interface ObjectivesDto {
 export interface ObjectiveDto {
   first: boolean;
   kills: number;
+}
+
+export interface RiotMatchDto {
+  metadata: {
+    matchId: string;
+    participants: string[]; // Array of PUUIDs
+  };
+  info: {
+    gameDuration: number; // seconds
+    gameMode: string;
+    gameEndTimestamp: number;
+    queueId: number;
+    participants: RiotParticipantDto[];
+    teams: RiotTeamDto[];
+  };
+}
+
+export interface RiotParticipantDto {
+  puuid: string;
+  championName: string;
+  championId: number;
+  teamPosition: string; // TOP, JUNGLE, MID, BOTTOM, UTILITY
+  teamId: number;
+
+  // Core stats
+  kills: number;
+  deaths: number;
+  assists: number;
+  win: boolean;
+
+  // Economy
+  goldEarned: number;
+  totalMinionsKilled: number;
+  neutralMinionsKilled: number;
+
+  // Damage
+  totalDamageDealtToChampions: number;
+  totalDamageTaken: number;
+
+  // Vision
+  visionScore: number;
+  wardsPlaced: number;
+  controlWardsPlaced: number;
+  wardsKilled: number;
+
+  // Objectives (from challenges)
+  challenges?: {
+    dragonTakedowns?: number;
+    baronTakedowns?: number;
+    turretTakedowns?: number;
+    laneMinionsFirst10Minutes?: number;
+    goldPerMinute?: number;
+  };
+}
+
+export interface RiotTeamDto {
+  teamId: number;
+  win: boolean;
+}
+
+export interface StoredMatch {
+  // IDs
+  match_id: string;
+  puuid: string;
+
+  // Champion
+  champion_name: string;
+  champion_id: number;
+  team_position: string;
+
+  // Core stats
+  win: boolean;
+  kills: number;
+  deaths: number;
+  assists: number;
+  kda: number; // DERIVED
+
+  // Economy
+  gold_earned: number;
+  total_minions_killed: number;
+  cs_per_min: number; // DERIVED
+  gold_per_min: number; // DERIVED
+
+  // Damage
+  total_damage_to_champions: number;
+  damage_share: number; // DERIVED (needs team data)
+
+  // Vision
+  vision_score: number;
+  wards_placed: number;
+  control_wards_placed: number;
+  wards_killed: number;
+
+  // Objectives
+  dragon_takedowns: number;
+  baron_takedowns: number;
+  turret_takedowns: number;
+
+  // Early game
+  cs_at_10: number;
+
+  // Game info
+  game_mode: string;
+  queue_id: number;
+  game_duration: number; // seconds
+  game_timestamp: Date;
 }
