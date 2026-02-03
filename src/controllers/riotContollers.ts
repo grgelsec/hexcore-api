@@ -1,20 +1,17 @@
-import express, {
-  request,
-  response,
-  type Request,
-  type Response,
-} from "express";
-import { RiotService } from "@services/services/riot.js";
+import express, { type Request, type Response } from "express";
+import { RiotService } from "@services/riot.js";
 import "dotenv/config";
 import type { AccountDto } from "@types";
 
+//TODO:
+// initialize the riot service for global export and import instead of every in every controller
 const RIOT_API_KEY = process.env.RIOT_API_KEY!;
 
 const riot = new RiotService(RIOT_API_KEY, "americas");
 
 export const playerId = async (req: Request, res: Response) => {
   try {
-    const username: string = req.body;
+    const { username }: { username: string } = req.body;
 
     if (!username) {
       return res.status(400).json({

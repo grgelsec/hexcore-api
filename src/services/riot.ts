@@ -100,6 +100,7 @@ class AccountService {
   }
 
   async getSummonerByRiotId(riotId: string) {
+    console.log(riotId);
     if (!riotId || !riotId.includes("#")) {
       throw new Error(`RiotId not in correct format.`);
     }
@@ -141,15 +142,15 @@ class MatchService {
   }
 }
 
-const RIOT_API_KEY = process.env.RIOT_API_KEY;
+// const RIOT_API_KEY = process.env.RIOT_API_KEY;
 
-const league = new RiotService(RIOT_API_KEY!, "americas");
+// const league = new RiotService(RIOT_API_KEY!, "americas");
 
-league.account.getSummonerByRiotId("Georgie#EZLL");
-league.account.getSummonerByPuuid(
-  "UPDmamHMSP2-38FGcerju-z3mBbI2Z6Ti0-64gwd9P6vJ7OyEuN0vpXrXMeDOJNGrGlJY-9hte98Mw",
-);
-league.match.getMatchIdsByPuuid(
-  "UPDmamHMSP2-38FGcerju-z3mBbI2Z6Ti0-64gwd9P6vJ7OyEuN0vpXrXMeDOJNGrGlJY-9hte98Mw",
-);
-league.match.getMatchByMatchId("NA1_5477102812");
+// league.account.getSummonerByRiotId("Georgie#EZLL");
+// league.account.getSummonerByPuuid(
+//   "UPDmamHMSP2-38FGcerju-z3mBbI2Z6Ti0-64gwd9P6vJ7OyEuN0vpXrXMeDOJNGrGlJY-9hte98Mw",
+// );
+// league.match.getMatchIdsByPuuid(
+//   "UPDmamHMSP2-38FGcerju-z3mBbI2Z6Ti0-64gwd9P6vJ7OyEuN0vpXrXMeDOJNGrGlJY-9hte98Mw",
+// );
+// league.match.getMatchByMatchId("NA1_5477102812");

@@ -12,7 +12,8 @@
     "types": ["node"],
     "paths": {
       "@types": ["./src/types.ts"],
-      "@services/*": ["./src/services/*"]
+      "@services/*": ["./src/services/*"],
+      "@routes": ["./src/routes/index.ts"],
     },
     // For nodejs:
     // "lib": ["esnext"],
@@ -43,6 +44,6 @@
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
-    "skipLibCheck": true
-  }
+    "skipLibCheck": true,
+  },
 }
