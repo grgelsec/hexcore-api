@@ -1,11 +1,5 @@
 import "dotenv/config";
-import type {
-  AccountDto,
-  region,
-  MatchDto,
-  RiotMatchDto,
-  FetchOptions,
-} from "@types";
+import type { AccountDto, RiotMatchDto, FetchOptions } from "@types";
 export class RiotService {
   private apiKey: string;
   private region: string;
