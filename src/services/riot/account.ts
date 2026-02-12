@@ -1,5 +1,5 @@
 import { request } from "./client.js";
-import { SummonerDto, type AccountDto } from "@types";
+import { type AccountDto } from "@types";
 
 export async function getAccountByPuuid(puuid: string) {
   if (!puuid) throw new Error(`Missing player unique user id (puuid).`);
@@ -22,13 +22,5 @@ export async function getAccountByRiotId(riotId: string) {
 
   return request<AccountDto>(
     `/riot/account/v1/accounts/by-riot-id/${encodeURIComponent(name)}/${encodeURIComponent(tag)}`,
-  );
-}
-
-export async function getSummonerByPuuid(puuid: string) {
-  if (!puuid) throw new Error("Missing player unique user id (puuid).");
-
-  return request<SummonerDto>(
-    `/lol/summoner/v4/summoners/by-puuid/${encodeURIComponent(puuid)}`,
   );
 }

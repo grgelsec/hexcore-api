@@ -24,6 +24,7 @@ export async function request<T>(endpoint: string, options: FetchOptions = {}) {
       if (!res.ok) {
         if (res.status >= 400 && res.status < 500) {
           const body = res.text();
+          console.log(endpoint);
           throw new Error(`${res.status}, ${res.statusText} \n Body: ${body}`);
         }
         throw new Error(`HTTP: ${res.status}`);
@@ -33,7 +34,6 @@ export async function request<T>(endpoint: string, options: FetchOptions = {}) {
       clearTimeout(timeoutId);
 
       const data = (await res.json()) as T;
-      console.log(data);
 
       return data;
     } catch (error) {
@@ -52,42 +52,4 @@ export async function request<T>(endpoint: string, options: FetchOptions = {}) {
     }
   }
   throw lastError;
-}
-
-export async function getSummonerByPuuid(puuid: string) {
-  if (!puuid) throw new Error(`Missing player unique user id (puuid).`);
-
-  return request<AccountDto>(
-    `/riot/account/v1/accounts/by-puuid/${encodeURIComponent(puuid)}`,
-  );
-}
-
-export async function getSummonerByRiotId(riotId: string) {
-  if (!riotId || !riotId.includes("#")) {
-    throw new Error(`RiotId not in correct format.`);
-  }
-
-  const [name, tag] = riotId.split("#");
-
-  if (!name || !tag) {
-    throw new Error("invalid RiotId");
-  }
-
-  return request<AccountDto>(
-    `/riot/account/v1/accounts/by-riot-id/${encodeURIComponent(name)}/${encodeURIComponent(tag)}`,
-  );
-}
-
-export async function getMatchIdsByPuuid(puuid: string) {
-  if (!puuid) throw new Error(`Missing player unique user id (puuid).`);
-
-  return request<Array<string>>(
-    `/lol/match/v5/matches/by-puuid/${encodeURIComponent(puuid)}/ids`,
-  );
-}
-
-export async function getMatchByMatchId(matchId: string) {
-  if (!matchId) throw new Error("Missing match id (matchId");
-
-  return request<RiotMatchDto>(`/lol/match/v5/matches/${encodeURI(matchId)}`);
 }
