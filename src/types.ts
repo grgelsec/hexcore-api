@@ -3,6 +3,7 @@ export type region = "americas" | "europe" | "asia";
 export interface FetchOptions extends RequestInit {
   timeout?: number;
   retries?: number;
+  region?: string;
 }
 
 export interface SummonerDto {

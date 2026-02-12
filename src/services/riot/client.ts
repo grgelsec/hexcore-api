@@ -1,5 +1,6 @@
 import "dotenv/config";
-import type { AccountDto, RiotMatchDto, FetchOptions } from "@types";
+import type { AccountDto, RiotMatchDto, FetchOptions, region } from "@types";
+import { validRegion } from "../../utils/valid-region.js";
 
 const RIOT_API_KEY = process.env.RIOT_API_KEY!;
 const REGION = process.env.RIOT_REGION || "americas";
