@@ -6,5 +6,8 @@ export async function getSummonerByPuuid(puuid: string) {
 
   return request<SummonerDto>(
     `/lol/summoner/v4/summoners/by-puuid/${encodeURIComponent(puuid)}`,
+    {
+      region: "na1",
+    },
   );
 }

@@ -7,15 +7,22 @@ export async function syncPlayer(riotId: string) {
 
   const accountData = await getAccountByRiotId(riotId);
 
-  if (!accountData.puuid)
-    throw new Error("Puuid was not returned by getAccountByRiotId!");
-
-  console.log("account data: ", accountData);
+  if (!accountData)
+    throw new Error("data was not returned by getAccountByRiotId!");
 
   const summonerData = await getSummonerByPuuid(accountData.puuid);
-  console.log("summoner data: ", summonerData);
 
-  return await insertPlayer(accountData, summonerData);
+  try {
+    await insertPlayer(
+      accountData.puuid,
+      `${accountData.gameName}#${accountData.tagLine}`,
+      summonerData.summonerLevel,
+    );
+  } catch (error) {
+    throw new Error(
+      `Failed to insert player ${accountData.puuid}: ${(error as Error).message}`,
+    );
+  }
 }
 
 syncPlayer("Georgie#EZLL");
