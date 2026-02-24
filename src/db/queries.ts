@@ -1,6 +1,7 @@
 import pool from "./pool.js";
 import type {
   AccountDto,
+  BanDto,
   MatchDto,
   MatchTeamDto,
   RiotParticipantDto,
@@ -105,5 +106,18 @@ export const insertMatchParticipants = async (
       participant.item_6,
       participant.timePlayed,
     ],
+  );
+};
+
+export const insertBans = async (
+  match: MatchDto,
+  team: TeamDto,
+  ban: BanDto,
+) => {
+  return await pool.query(
+    `INSERT INTO bans (match_id, team_id, champion_id, pick_turn)
+    VALUES($1, $2, $3, $4)
+    ON CONFLICT(match_id, team_id, pick_turn) DO NOTHING`,
+    [match.metadata.matchId, team.teamId, ban.championId, ban.pickTurn],
   );
 };
