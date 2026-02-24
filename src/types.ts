@@ -417,6 +417,7 @@ export interface TeamDto {
   teamId: number;
   objectives: ObjectivesDto;
   win: boolean;
+  bans: BanDto[];
 }
 
 export interface BanDto {

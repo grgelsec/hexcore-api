@@ -1,6 +1,6 @@
-import { insertTeams } from "@queries";
+import { insertBans, insertTeams } from "@queries";
 import { getMatchByMatchId } from "@services/riot/match.js";
-import type { MatchDto, TeamDto, MatchTeamDto } from "@types";
+import type { MatchDto, TeamDto, MatchTeamDto, BanDto } from "@types";
 
 export const syncTeams = async (matchid: string) => {
   if (!matchid) throw Error("Missing matchid (matchid).");
@@ -84,4 +84,28 @@ export const syncTeams = async (matchid: string) => {
   }
 };
 
-syncTeams("NA1_5493139552");
+export const syncBans = async (matchid: string) => {
+  if (!matchid) throw new Error("Missing matchid!");
+
+  const match = await getMatchByMatchId(matchid);
+  const bans: BanDto[] = [];
+
+  try {
+    for (const team in match.info.teams) {
+      if (!match.info.teams[team])
+        throw new Error(`${matchid} missing team ${team}`);
+
+      await Promise.all(
+        match.info.teams[team]?.bans.map((ban) => {
+          insertBans(match, match.info.teams[team]!, ban);
+        }),
+      );
+    }
+  } catch (error) {
+    throw new Error(
+      `Failed to insert bans ${matchid}, ${(error as Error).message}`,
+    );
+  }
+};
+
+syncBans("NA1_5495427187");
