@@ -33,7 +33,9 @@ export const returnRecentMatches = async (riotid: string, count: number) => {
 
   const recentMatches = await getPastNGames(puuid, count);
 
+  console.log(recentMatches);
+
   return recentMatches;
 };
 
-console.log(await returnRecentMatches("ohnoreason#7013", 3));
+//console.log(await returnRecentMatches("ohnoreason#7013", 3));

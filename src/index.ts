@@ -1,6 +1,6 @@
 import express, { request, response } from "express";
 import type { Express } from "express";
-import { summonerRouter } from "@routes";
+import { summonerRouter, matchesRouter } from "@routes";
 import { rateLimit } from "@middleware";
 import "dotenv";
 
@@ -20,3 +20,4 @@ app.get("/api/v1", (request, response) => {
 });
 
 app.use("/api/v1/summoner", summonerRouter);
+app.use("/api/v1/matches", matchesRouter);
