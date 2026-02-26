@@ -162,4 +162,8 @@ export const getChampionBanRate = async (championId: number) => {
     FROM bans`,
     [championId],
   );
+
+  const { champ_bans, total_bans } = result.rows[0];
+
+  return total_bans > 0 ? champ_bans / total_bans : 0;
 };
