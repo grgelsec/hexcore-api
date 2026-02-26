@@ -545,3 +545,17 @@ export interface StoredMatch {
   game_duration: number; // seconds
   game_timestamp: Date;
 }
+
+export interface ChampionData {
+  type: string;
+  format: string;
+  version: string;
+  data: Record<string, Champion>;
+}
+
+export interface Champion {
+  id: string;
+  key: string;
+  name: string;
+  title: string;
+}
