@@ -1,7 +1,7 @@
 import express, { request, response } from "express";
 import type { Express } from "express";
 import { summonerRouter, matchesRouter } from "@routes";
-import { rateLimit } from "@middleware";
+import { backpressure, rateLimit } from "@middleware";
 import "dotenv";
 
 const app: Express = express();
@@ -12,8 +12,9 @@ app.listen(port, () => {
 });
 
 app.use(express.json());
-
 app.use(rateLimit);
+
+app.use(backpressure);
 
 app.get("/api/v1", (request, response) => {
   response.json({ message: "League API server is live!" });
