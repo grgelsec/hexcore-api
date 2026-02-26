@@ -2,9 +2,8 @@ import { returnRecentMatches } from "@services/hexcore";
 import type { RiotParticipantDto } from "@types";
 import type { Request, Response } from "express";
 
-export const recentMatches = async (req: Request, res: Response) => {
+export const getRecentMatches = async (req: Request, res: Response) => {
   try {
-    console.log("hit recentMatches", req.params);
     const riotId = req.params.riotId as string;
     const count = Math.min(parseInt(req.query.count as string) || 20, 20);
 

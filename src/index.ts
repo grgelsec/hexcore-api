@@ -19,5 +19,5 @@ app.get("/api/v1", (request, response) => {
   response.json({ message: "League API server is live!" });
 });
 
-app.use("/api/v1/summoner", summonerRouter);
-app.use("/api/v1/matches", matchesRouter);
+app.use("/api/v1", summonerRouter);
+app.use("/api/v1", matchesRouter);

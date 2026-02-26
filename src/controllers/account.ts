@@ -7,17 +7,17 @@ import { getAccountByRiotId } from "@services/riot";
 // initialize the riot service for global export and import instead of every in every controller
 const RIOT_API_KEY = process.env.RIOT_API_KEY!;
 
-export const playerId = async (req: Request, res: Response) => {
+export const getPlayerId = async (req: Request, res: Response) => {
   try {
-    const { username }: { username: string } = req.body;
+    const riotId: string = req.params.riotId as string;
 
-    if (!username) {
+    if (!riotId) {
       return res.status(400).json({
         success: false,
         error: "Username is required.",
       });
     }
-    const data: AccountDto = await getAccountByRiotId(username);
+    const data: AccountDto = await getAccountByRiotId(riotId);
 
     if (!data) {
       return res.status(400).json({

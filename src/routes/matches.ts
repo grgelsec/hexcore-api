@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { recentMatches } from "@controllers";
+import { getRecentMatches } from "@controllers";
 
 export const matchesRouter = Router();
 
-matchesRouter.get("/:riotId/recent", recentMatches);
+matchesRouter.get("/matches/:riotId/recent", getRecentMatches);
