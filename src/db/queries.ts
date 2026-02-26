@@ -121,3 +121,34 @@ export const insertBans = async (
     [match.metadata.matchId, team.teamId, ban.championId, ban.pickTurn],
   );
 };
+
+export const getPuuidBySummonerName = async (riotId: string) => {
+  const result = await pool.query(
+    `SELECT puuid FROM players WHERE summoner_name = $1`,
+    [riotId],
+  );
+  return result.rows[0]?.puuid || null;
+};
+
+export const getMissingMatchIds = async (matchIds: string[]) => {
+  const result = await pool.query(
+    `SELECT unnest($1::varchar[]) AS match_id
+    EXCEPT
+    SELECT match_id from matches`,
+    [matchIds],
+  );
+  return result.rows.map((row) => row.match_id);
+};
+
+export const getPastNGames = async (puuid: string, count: number) => {
+  const result = await pool.query(
+    `SELECT mp.* 
+    FROM match_participants mp
+    JOIN matches m ON mp.match_id = m.match_id
+    WHERE mp.puuid = $1
+    ORDER BY m.game_end_timestamp DESC
+    LIMIT $2`,
+    [puuid, count],
+  );
+  return result.rows;
+};

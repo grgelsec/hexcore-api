@@ -1,6 +1,6 @@
 import { insertPlayer } from "@queries";
-import { getAccountByRiotId } from "@services/riot/account.js";
-import { getSummonerByPuuid } from "@services/riot/summoner.js";
+import { getAccountByRiotId } from "@services/riot";
+import { getSummonerByPuuid } from "@services/riot";
 
 export async function syncPlayer(riotId: string) {
   if (!riotId) throw new Error("Missing player riot id (riotId with tagline).");

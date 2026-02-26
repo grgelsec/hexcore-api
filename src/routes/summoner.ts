@@ -1,7 +1,5 @@
 import { Router } from "express";
-import { playerId } from "../controllers/riotContollers.js";
-
-//TODO: think of better naming for the routes
+import { playerId } from "@controllers";
 
 export const summonerRouter = Router();
 
