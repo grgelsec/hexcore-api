@@ -152,3 +152,7 @@ export const getPastNGames = async (puuid: string, count: number) => {
   );
   return result.rows;
 };
+
+export const getChampionBanRate = async (championName: string) => {
+  //Need to write ban rate query
+};

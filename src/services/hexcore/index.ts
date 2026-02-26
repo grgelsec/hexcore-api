@@ -1,1 +1,1 @@
-export * from "./hexcoreMatches.js";
+export * from "./matches.js";

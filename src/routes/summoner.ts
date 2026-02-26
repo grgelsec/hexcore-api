@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { playerId } from "@controllers";
+import { getPlayerId } from "@controllers";
 
 export const summonerRouter = Router();
 
-summonerRouter.post("/username", playerId);
+summonerRouter.get("/summoner/:riotId", getPlayerId);
