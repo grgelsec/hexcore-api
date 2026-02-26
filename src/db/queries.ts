@@ -139,3 +139,16 @@ export const getMissingMatchIds = async (matchIds: string[]) => {
   );
   return result.rows.map((row) => row.match_id);
 };
+
+export const getPastNGames = async (puuid: string, count: number) => {
+  const result = await pool.query(
+    `SELECT mp.* 
+    FROM match_participants mp
+    JOIN matches m ON mp.match_id = m.match_id
+    WHERE mp.puuid = $1
+    ORDER BY m.game_end_timestamp DESC
+    LIMIT $2`,
+    [puuid, count],
+  );
+  return result.rows;
+};

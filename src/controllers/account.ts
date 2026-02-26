@@ -1,12 +1,11 @@
 import express, { type Request, type Response } from "express";
 import "dotenv/config";
 import type { AccountDto } from "@types";
+import { getAccountByRiotId } from "@services/riot";
 
 //TODO:
 // initialize the riot service for global export and import instead of every in every controller
 const RIOT_API_KEY = process.env.RIOT_API_KEY!;
-
-const riot = new RiotService(RIOT_API_KEY, "americas");
 
 export const playerId = async (req: Request, res: Response) => {
   try {
@@ -18,7 +17,7 @@ export const playerId = async (req: Request, res: Response) => {
         error: "Username is required.",
       });
     }
-    const data: AccountDto = await riot.account.getSummonerByRiotId(username);
+    const data: AccountDto = await getAccountByRiotId(username);
 
     if (!data) {
       return res.status(400).json({

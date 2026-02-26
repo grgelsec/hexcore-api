@@ -1,5 +1,5 @@
 import { insertBans, insertTeams } from "@queries";
-import { getMatchByMatchId } from "@services/riot/match.js";
+import { getMatchByMatchId } from "@services/riot";
 import type { MatchDto, TeamDto, MatchTeamDto, BanDto } from "@types";
 
 export const syncTeams = async (matchid: string) => {

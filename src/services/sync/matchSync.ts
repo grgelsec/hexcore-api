@@ -1,5 +1,5 @@
 import { insertMatch, insertMatchParticipants, insertPlayer } from "@queries";
-import { getMatchByMatchId } from "@services/riot/match.js";
+import { getMatchByMatchId } from "@services/riot";
 import type {
   MatchDto,
   ParticipantDto,

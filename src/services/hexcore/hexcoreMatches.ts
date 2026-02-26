@@ -1,8 +1,12 @@
-import { getMissingMatchIds, getPuuidBySummonerName } from "@queries";
-import { getMatchIdsByPuuid } from "@services/riot/match.js";
-import { syncParticipants } from "@services/sync/matchSync.js";
+import {
+  getMissingMatchIds,
+  getPastNGames,
+  getPuuidBySummonerName,
+} from "@queries";
+import { getMatchIdsByPuuid } from "@services/riot";
+import { syncParticipants } from "@services/sync";
 
-export const returnMatches = async (riotid: string, count: number) => {
+export const returnRecentMatches = async (riotid: string, count: number) => {
   /*
     1. Take in riot id and match count.
     2. Grab players last n matches.
@@ -26,6 +30,10 @@ export const returnMatches = async (riotid: string, count: number) => {
       }),
     );
   }
+
+  const recentMatches = await getPastNGames(puuid, count);
+
+  return recentMatches;
 };
 
-returnMatches("Georgie#EZLL", 20);
+console.log(await returnRecentMatches("ohnoreason#7013", 3));

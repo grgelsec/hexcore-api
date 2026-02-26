@@ -12,11 +12,14 @@
     "types": ["node"],
     "paths": {
       "@types": ["./src/types.ts"],
-      "@services/*": ["./src/services/*"],
+      "@services/riot": ["./src/services/riot/index.ts"],
+      "@services/hexcore": ["./src/services/hexcore/index.ts"],
+      "@services/sync": ["./src/services/sync/index.ts"],
       "@routes": ["./src/routes/index.ts"],
       "@middleware": ["./src/middleware/index.ts"],
       "@queries": ["./src/db/queries.ts"],
-      "@utils": ["./src/utils/index.ts"]
+      "@utils": ["./src/utils/index.ts"],
+      "@controllers": ["./src/controllers/index.ts"]
     },
     // For nodejs:
     // "lib": ["esnext"],

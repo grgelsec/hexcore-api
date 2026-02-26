@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { playerId } from "../controllers/riotContollers.js";
+import { playerId } from "@controllers";
 
 //TODO: think of better naming for the routes
 
