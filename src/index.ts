@@ -1,6 +1,6 @@
 import express, { request, response } from "express";
 import type { Express } from "express";
-import { summonerRouter, matchesRouter } from "@routes";
+import { summonerRouter, matchesRouter, championsRouter } from "@routes";
 import { backpressure, rateLimit } from "@middleware";
 import "dotenv";
 
@@ -21,4 +21,5 @@ app.get("/api/v1", (request, response) => {
 });
 
 app.use("/api/v1", summonerRouter);
+app.use("/api/v1", championsRouter);
 app.use("/api/v1", matchesRouter);

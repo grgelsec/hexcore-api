@@ -1,10 +1,10 @@
 import type { Request, Response } from "express";
 import { championBanRate } from "../services/hexcore/champions.js";
-import { success } from "zod/mini";
 
-export const getChampionBanRate = async (res: Response, req: Request) => {
+export const getChampionBanRate = async (req: Request, res: Response) => {
   try {
-    const champion = req.params.champion as string;
+    const champion = req.params.championName as string;
+    console.log(champion);
 
     if (!champion) {
       return res.status(400).json({
@@ -13,7 +13,7 @@ export const getChampionBanRate = async (res: Response, req: Request) => {
       });
     }
 
-    const data = championBanRate(champion);
+    const data = await championBanRate(champion);
 
     if (!data) {
       return res.status(400).json({

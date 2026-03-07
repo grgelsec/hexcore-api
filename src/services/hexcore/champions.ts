@@ -7,5 +7,11 @@ export const championBanRate = async (championName: string) => {
   const championId = await getChampionId(championName);
   const banRate = await getChampionBanRate(championId);
 
+  if (banRate == 0) {
+    return "No ban rate for this champion.";
+  }
+
   return banRate;
 };
+
+console.log(await championBanRate("Yasuo"));

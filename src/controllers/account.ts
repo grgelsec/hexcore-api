@@ -3,10 +3,6 @@ import "dotenv/config";
 import type { AccountDto } from "@types";
 import { getAccountByRiotId } from "@services/riot";
 
-//TODO:
-// initialize the riot service for global export and import instead of every in every controller
-const RIOT_API_KEY = process.env.RIOT_API_KEY!;
-
 export const getPlayerId = async (req: Request, res: Response) => {
   try {
     const riotId: string = req.params.riotId as string;
@@ -26,7 +22,7 @@ export const getPlayerId = async (req: Request, res: Response) => {
       });
     }
 
-    res.status(200).json({ success: true, data: data });
+    return res.status(200).json({ success: true, data: data });
   } catch (error) {
     res.status(400).json({
       success: false,
