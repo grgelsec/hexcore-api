@@ -6,6 +6,6 @@ export const requestTime = (
   next: NextFunction,
 ) => {
   const requestTime = Date.now();
-  // req.body = requestTime;
+
   next();
 };

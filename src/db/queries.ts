@@ -153,6 +153,17 @@ export const getPastNGames = async (puuid: string, count: number) => {
   return result.rows;
 };
 
-export const getChampionBanRate = async (championName: string) => {
+export const getChampionBanRate = async (championId: number) => {
   //Need to write ban rate query
+  const result = await pool.query(
+    `SELECT
+      COUNT(*) FILTER (WHERE champion_id = $1) AS champ_bans,
+      COUNT(*) AS total_bans
+    FROM bans`,
+    [championId],
+  );
+
+  const { champ_bans, total_bans } = result.rows[0];
+
+  return total_bans > 0 ? champ_bans / total_bans : 0;
 };

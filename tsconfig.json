@@ -19,7 +19,8 @@
       "@middleware": ["./src/middleware/index.ts"],
       "@queries": ["./src/db/queries.ts"],
       "@utils": ["./src/utils/index.ts"],
-      "@controllers": ["./src/controllers/index.ts"]
+      "@controllers": ["./src/controllers/index.ts"],
+      "@data": ["./src/data/index.ts"]
     },
     // For nodejs:
     // "lib": ["esnext"],
@@ -50,6 +51,7 @@
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "resolveJsonModule": true
   }
 }
