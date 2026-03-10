@@ -22,6 +22,7 @@
       "@controllers": ["./src/controllers/index.ts"],
       "@data": ["./src/data/index.ts"],
       "@error": ["./src/errors/index.ts"],
+      "@redis": ["./src/services/redis/index.ts"],
     },
     // For nodejs:
     // "lib": ["esnext"],
