@@ -2,6 +2,39 @@ import type { NextFunction, Request, Response } from "express";
 import { redis } from "@redis";
 //TODO: Re-implment with sliding window
 
+export interface SlidingWindowCounterConfig {
+  maxRequests: number;
+  windowSeconds: number;
+}
+
+export const DEFAULT_CONFIG: SlidingWindowCounterConfig = {
+  maxRequests: 10,
+  windowSeconds: 10,
+}
+
+export interface RateLimitResult {
+  allowed: boolean;
+  remaining: number; // requests left in the current window
+  limit: number; // configured maximum
+  retryAfter: number | null; // seconds untilt he client should retry
+  delay?: number | null;
+}
+
+export const slidingWindow = async (key: string, config: SlidingWindowCounterConfig = DEFAULT_CONFIG): Promise<RateLimitResult> {
+  const { maxRequests, windowSeconds } = config;
+
+  const now = Math.floor(Date.now() / 1000);
+  const currentWindow = Math.floor(now / windowSeconds);
+  const previousWindow = currentWindow - 1;
+
+  const currKey = `${key}:${currentWindow}`;
+  const prevKey = `${key}:${currentWindow}`;
+
+  const elapsed = (now % windowSeconds) / windowSeconds;
+
+}
+
+
 //Rate-Limit constants
 const maxRequests = 5;
 const windowSize = 20000;
