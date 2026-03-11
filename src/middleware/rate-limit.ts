@@ -32,6 +32,8 @@ export const slidingWindow = async (key: string, config: SlidingWindowCounterCon
 
   const elapsed = (now % windowSeconds) / windowSeconds;
 
+  const prevCount = parseInt((await redis.get(prevKey)) ?? "0", 10)
+
 }
 
 
