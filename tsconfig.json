@@ -20,7 +20,7 @@
       "@queries": ["./src/db/queries.ts"],
       "@utils": ["./src/utils/index.ts"],
       "@controllers": ["./src/controllers/index.ts"],
-      "@data": ["./src/data/index.ts"],
+      "@assets": ["./src/assets/index.ts"],
       "@error": ["./src/errors/index.ts"],
       "@redis": ["./src/services/redis/index.ts"],
     },
