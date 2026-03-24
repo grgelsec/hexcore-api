@@ -1,4 +1,4 @@
-import { getChampionId } from "@data";
+import { getChampionId } from "@assets";
 import { getChampionBanRate } from "@queries";
 
 export const championBanRate = async (championName: string) => {
