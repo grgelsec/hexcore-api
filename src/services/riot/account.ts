@@ -24,5 +24,3 @@ export async function getAccountByRiotId(riotId: string) {
     `/riot/account/v1/accounts/by-riot-id/${encodeURIComponent(name)}/${encodeURIComponent(tag)}`,
   );
 }
-
-console.log(await getAccountByRiotId("Georgie#EZLL"));

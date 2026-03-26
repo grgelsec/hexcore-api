@@ -35,5 +35,3 @@ export const returnRecentMatches = async (
 
   return recentParticipatedMatches;
 };
-
-console.log(await returnRecentMatches("Georgie#EZLL", 40));
