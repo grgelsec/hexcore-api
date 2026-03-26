@@ -10,15 +10,13 @@ import type { Account } from "@db/types";
 
 export const returnRecentMatches = async (
   riotid: string,
-  count: number,
 ): Promise<RiotParticipantDto[]> => {
   if (!riotid) throw new Error("Missing riot id for returnMatches!");
-  if (!count) count == 20;
 
   const account: Account = await getAccountBySummonerName(riotid);
 
   // grab recent n matchIds from riot api
-  const matchIds = await getMatchIdsByPuuid(account.puuid, count);
+  const matchIds = await getMatchIdsByPuuid(account.puuid, 50);
 
   // curate a list of the matchIds not already in db
   const missingMatchIds = await getMissingMatchIds(matchIds);
@@ -31,7 +29,7 @@ export const returnRecentMatches = async (
     );
   }
 
-  const recentParticipatedMatches = await getPastNGames(account.puuid, count);
+  const recentParticipatedMatches = await getPastNGames(account.puuid, 50);
 
   return recentParticipatedMatches;
 };

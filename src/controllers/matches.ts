@@ -3,20 +3,12 @@ import { returnRecentMatches } from "@services/hexcore";
 import type { RiotParticipantDto } from "@types";
 import type { Request, Response } from "express";
 import { redis } from "@redis";
-import * as crypto from "node:crypto";
+import { getParamHashKey } from "@utils";
 
 interface matchesResult {
   data: RiotParticipantDto[];
   isFromCache: boolean;
 }
-const getParamHashKey = (requestParameter: string) => {
-  let retKey = "";
-  if (requestParameter) {
-    retKey = crypto.createHash("sha256").update(requestParameter).digest("hex");
-  }
-
-  return "CACHE_ASIDE_" + retKey;
-};
 
 export const getRecentMatches = async (req: Request, res: Response) => {
   let result: matchesResult = { data: [], isFromCache: false };
@@ -34,10 +26,8 @@ export const getRecentMatches = async (req: Request, res: Response) => {
     result.data = docArr;
     result.isFromCache = true;
   } else {
-    const recentMatches: RiotParticipantDto[] = await returnRecentMatches(
-      riotId,
-      count,
-    );
+    const recentMatches: RiotParticipantDto[] =
+      await returnRecentMatches(riotId);
 
     if (!recentMatches) throw new NotFoundError("Recent matches not found");
 
@@ -50,3 +40,36 @@ export const getRecentMatches = async (req: Request, res: Response) => {
 
   return res.json(result);
 };
+
+async function cacheAside<T>(
+  fn: (requestParam: string) => Promise<T>,
+  requestParam: string,
+) {
+  let res: { data: T[]; isFromCache: boolean } = {
+    data: [],
+    isFromCache: false,
+  };
+
+  const hashkey = getParamHashKey(requestParam);
+  const cachedData = await redis.get(hashkey);
+  const docArr = cachedData ? JSON.parse(cachedData) : [];
+
+  if (docArr && docArr.length) {
+    res.data = docArr;
+    res.isFromCache = true;
+  } else {
+    const result: T = await fn(requestParam);
+
+    if (!result) throw new NotFoundError();
+
+    if (result) {
+      redis.set(hashkey, JSON.stringify(result), "EX", 60);
+    }
+
+    res.data = result;
+  }
+}
+
+console.log(
+  await cacheAside<RiotParticipantDto[]>(returnRecentMatches, "Georgie#EZLL"),
+);
