@@ -5,7 +5,7 @@ import { BadRequestError, NotFoundError } from "@error";
 export const getChampionBanRate = async (req: Request, res: Response) => {
   const championName = req.params.championName as string;
 
-  if (!championBanRate) throw new BadRequestError("Champion name is required");
+  if (!championName) throw new BadRequestError("Champion name is required");
 
   const banrate = await championBanRate(championName);
 
