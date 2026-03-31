@@ -73,4 +73,9 @@ export class RiotClient {
   }
 }
 
+/*
+ - Dependency Injection
+ - A object should recieve its dependencies rather than reach out to find them.
+*/
+
 export const riot = new RiotClient(process.env.RIOT_API_KEY!, "americas");
