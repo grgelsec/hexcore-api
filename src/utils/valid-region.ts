@@ -1,9 +1,3 @@
-export function validRegion(region: string): boolean {
-  const regions = ["americas", "europe", "korea"];
-
-  return region.includes(region);
-}
-
 export function validPlatformRegion(region: string): boolean {
   const platformRegions = [
     "BR1",
