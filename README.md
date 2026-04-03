@@ -8,7 +8,6 @@ A League of Legends API wrapper built with Express.js v5 and TypeScript. It fetc
 - **Framework:** Express.js v5
 - **Database:** PostgreSQL (via `pg`)
 - **Cache:** Redis (via `ioredis`)
-- **Validation:** Zod
 
 ## API Endpoints
 
